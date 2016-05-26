@@ -7,7 +7,7 @@ export function checkMagic (magic) {
   if (!magic.equals(MAGIC)) throw new RangeError('Invalid secure container magic.')
 }
 
-export const header = varstruct([
+export const container = varstruct([
   { name: 'magic', type: varstruct.Bound(varstruct.Buffer(4), checkMagic) },
   { name: 'versionTag', type: varstruct.VarString(varstruct.UInt8) },
   { name: 'appName', type: varstruct.VarString(varstruct.UInt8, 'utf-8') },
@@ -17,9 +17,9 @@ export const header = varstruct([
 ])
 
 export function decode (containerBlob: Buffer): Object {
-
+  return container.decode(containerBlob)
 }
 
 export function encode (object): Buffer {
-
+  return container.encode(object)
 }
