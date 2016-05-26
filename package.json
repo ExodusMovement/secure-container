@@ -6,10 +6,16 @@
   "bugs": {
     "url": "https://github.com/exodusmovement/secure-container/issues"
   },
+  "dependencies": {
+    "varstruct": "^5.2.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.9.0",
     "babel-eslint": "^6.0.4",
-    "babel-preset-es2015-node4": "^2.1.0",
+    "babel-plugin-syntax-flow": "^6.8.0",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
+    "babel-plugin-typecheck": "^3.9.0",
+    "babel-preset-node6": "^11.0.0",
     "babel-preset-stage-2": "^6.5.0",
     "babel-register": "^6.9.0",
     "standard": "^7.1.0",
@@ -18,7 +24,7 @@
     "tape-promise": "^1.1.0"
   },
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 6.0.0"
   },
   "files": [
     "./lib",
@@ -36,10 +42,13 @@
     "url": "git+https://github.com/exodusmovement/secure-container.git"
   },
   "scripts": {
-    "build": "babel ./src/index.js -o ./lib/index.js",
+    "build": "babel --ignore=__tests__ src --out-dir lib",
     "lint": "standard",
+    "prepublish": "npm test",
+    "pretest": "npm run build",
+    "posttest": "NODE_ENV=production npm run build",
     "test": "npm run build && npm run lint && npm run unit",
-    "unit": "tape -r babel-register tests/*.test.js | tap-spec"
+    "unit": "find ./src -name *.test.js -exec tape -r babel-register {} \\; | tap-spec"
   },
   "standard": {
     "ignore": "lib/",
