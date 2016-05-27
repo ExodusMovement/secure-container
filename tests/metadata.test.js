@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import test from 'tape'
-import * as metadata from '../'
+import * as metadata from '../src/metadata'
 
 test('encode / decode metadata', (t) => {
   t.plan(1)
@@ -23,7 +23,11 @@ test('encode / decode metadata', (t) => {
     }
   }
 
-  var obj2 = metadata.decode(metadata.encode(obj))
+  var b = Buffer.alloc(2048)
+  var b2 = metadata.encode(obj)
+  b2.copy(b)
+
+  var obj2 = metadata.decode(b)
   t.deepEqual(obj, obj2, 'verify objects are the same')
 
   t.end()
