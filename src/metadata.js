@@ -2,7 +2,7 @@
 import varstruct, { UInt32BE, Buffer as Buf } from 'varstruct'
 import { vsf } from './util'
 
-export const metadata = varstruct(vsf([
+export const struct = varstruct(vsf([
   ['scrypt', [
     ['salt', Buf(32)],
     ['n', UInt32BE],
@@ -21,15 +21,13 @@ export const metadata = varstruct(vsf([
 ]))
 
 export function decode (metadataBlob: Buffer): Object {
-  return metadata.decode(metadataBlob)
+  if (metadataBlob.byteLength > 2048) console.warn('metadata greater than 2048 bytes, are you sure this is the SECO metadata?')
+  return struct.decode(metadataBlob)
 }
 
 export function encode (metadataObject): Buffer {
-  return metadata.encode(metadataObject)
+  return struct.encode(metadataObject)
 }
-
-export function create (passphrase, scryptParams = { n: 16834, r: 8, p: 1 }) : Object {
-  return {}
 
 /*
 export function create (scryptParams = defaultScryptParams()) : Object {
@@ -47,5 +45,3 @@ export function create (scryptParams = defaultScryptParams()) : Object {
   }
 }
 */
-
-}

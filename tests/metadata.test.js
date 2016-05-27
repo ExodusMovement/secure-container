@@ -33,5 +33,6 @@ test('encode / decode metadata', (t) => {
   t.end()
 })
 
+test.skip('_encryptKey / _decryptKey', (t) => {
   t.end()
 })

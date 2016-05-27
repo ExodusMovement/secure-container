@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import test from 'tape'
 import * as scCrypto from '../src/crypto'
 
@@ -31,6 +32,21 @@ test('stretchPassphrase will accept a buffer passphrase', (t) => {
   var { key } = scCrypto.stretchPassphrase(passphrase, scryptParams)
   t.is(key.toString('hex'), expectedKey.toString('hex'), 'keys are the same')
   t.is(key.byteLength, 32, '32 byte key')
+
+  t.end()
+})
+
+test('aesEncrypt / aesDecrypt', (t) => {
+  const key = crypto.randomBytes(32)
+  const message = new Buffer('we will attack at midnight!')
+
+  const { blob, authTag, iv } = scCrypto.aesEncrypt(key, message)
+  t.true(Buffer.isBuffer(iv), 'iv is a buffer')
+  t.true(Buffer.isBuffer(authTag), 'authTag is a buffer')
+
+  const decryptedMessage = scCrypto.aesDecrypt(key, blob, { iv, authTag })
+
+  t.is(decryptedMessage.toString('utf8'), message.toString('utf8'), 'messages are the same')
 
   t.end()
 })
