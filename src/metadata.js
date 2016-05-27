@@ -31,15 +31,21 @@ export function encode (metadataObject): Buffer {
 export function create (passphrase, scryptParams = { n: 16834, r: 8, p: 1 }) : Object {
   return {}
 
-export function defaultScryptParams () {
+/*
+export function create (scryptParams = defaultScryptParams()) : Object {
   return {
-    salt: crypto.randomBytes(32),
-    n: 16384,
-    r: 8,
-    p: 1
+    scrypt: scryptParams,
+    blobKey: {
+      iv: Buffer.alloc(12),
+      authTag: Buffer.alloc(16),
+      key: Buffer.alloc(32)
+    },
+    blob: {
+      iv: Buffer.alloc(12),
+      authTag: Buffer.alloc(16)
+    }
   }
 }
-// always returns 32 byte key
-export function _stretchPassphrase (passphrase: string | Buffer, { salt, n, r, p } = defaultScryptParams()) : Buffer {
-  return scrypt(passphrase, salt, n, r, p, 32)
+*/
+
 }
