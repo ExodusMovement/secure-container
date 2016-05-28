@@ -5,6 +5,8 @@ secure-container
 
 Don't use this yet.
 
+- There is no stability in this spec yet.
+- It needs a full security audit.
 
 Install
 -------
