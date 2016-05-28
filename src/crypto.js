@@ -38,3 +38,7 @@ export function boxDecrypt (passphrase: string | Buffer, blob: Buffer, { iv, aut
   const message = aesDecrypt(key, blob, { iv, authTag })
   return message
 }
+
+export function sha256 (message: Buffer): Buffer {
+  return crypto.createHash('sha256').update(message).digest()
+}

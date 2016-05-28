@@ -23,16 +23,8 @@ test('encode / decode metadata', (t) => {
     }
   }
 
-  var b = Buffer.alloc(2048)
-  var b2 = metadata.encode(obj)
-  b2.copy(b)
-
-  var obj2 = metadata.decode(b)
+  var obj2 = metadata.decode(metadata.encode(obj))
   t.deepEqual(obj, obj2, 'verify objects are the same')
 
-  t.end()
-})
-
-test.skip('_encryptKey / _decryptKey', (t) => {
   t.end()
 })

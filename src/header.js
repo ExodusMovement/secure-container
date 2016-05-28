@@ -8,6 +8,7 @@ import varstruct, {
 } from 'varstruct'
 import { vsf } from './util'
 
+export const HEADER_LEN_BYTES = 224
 export const MAGIC = Buffer.from('SECO', 'utf8')
 
 export function checkMagic (magic) {
@@ -24,10 +25,16 @@ export const struct = varstruct(vsf([
 ]))
 
 export function decode (headerBlob: Buffer): Object {
-  if (headerBlob.byteLength > 512) console.warn('header greater than 512 bytes, are you sure this is the header?')
+  if (headerBlob.byteLength > HEADER_LEN_BYTES) console.warn(`header greater than ${HEADER_LEN_BYTES} bytes, are you sure this is the header?`)
   return struct.decode(headerBlob)
 }
 
-export function encode (headerObject): Buffer {
-  return struct.encode(headerObject)
+export function encode (header: Object): Buffer {
+  return struct.encode(header)
+}
+
+export function serialize (header: Object) {
+  let buf = Buffer.alloc(HEADER_LEN_BYTES)
+  encode(header).copy(buf)
+  return buf
 }
