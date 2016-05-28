@@ -56,10 +56,20 @@ test('integration', (t) => {
 
   // -- DECRYPTION --
 
-  // const decFileObj = file.decode(fileBuf)
+  const decFileObj = file.decode(fileBuf)
   const decTotalBuf = fileBuf.slice(header.HEADER_LEN_BYTES + 32)
+  const decMetadata = metadata.decode(decFileObj.metadata)
 
   t.deepEqual(scCrypto.sha256(decTotalBuf), fileObj.checksum, 'checksums equal')
+
+  const decSecretKey = scCrypto.boxDecrypt(passphrase, decMetadata.blobKey.key, decMetadata.blobKey, decMetadata.scrypt)
+
+  t.deepEqual(decSecretKey, secretKey, 'secret keys are the same')
+
+  const decMessage = scCrypto.aesDecrypt(decSecretKey, decFileObj.blob, decMetadata.blob)
+  const decData = JSON.parse(decMessage.toString('utf8'))
+
+  t.deepEqual(dataToEncrypt, decData, 'secret data is the same')
 
   t.end()
 })
