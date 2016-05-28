@@ -1,5 +1,6 @@
 /* @flow */
 import varstruct, { UInt32BE, Buffer as Buf } from 'varstruct'
+import { createScryptParams } from './crypto'
 import { vsf } from './util'
 
 export const struct = varstruct(vsf([
@@ -29,8 +30,7 @@ export function encode (metadataObject): Buffer {
   return struct.encode(metadataObject)
 }
 
-/*
-export function create (scryptParams = defaultScryptParams()) : Object {
+export function create (scryptParams = createScryptParams()) : Object {
   return {
     scrypt: scryptParams,
     blobKey: {
@@ -44,4 +44,3 @@ export function create (scryptParams = defaultScryptParams()) : Object {
     }
   }
 }
-*/
