@@ -11,14 +11,14 @@ export function stretchPassphrase (passphrase: string | Buffer, { salt, n, r, p 
   return { key, salt }
 }
 
-export function aesEncrypt (key, message, iv = crypto.randomBytes(12)) {
+export function aesEncrypt (key: Buffer, message: Buffer, iv: Buffer = crypto.randomBytes(12)) : Object {
   const cipher = crypto.createCipheriv('aes-256-gcm', key, iv)
   const blob = Buffer.concat([cipher.update(message), cipher.final()])
   const authTag = cipher.getAuthTag()
   return { authTag, blob, iv }
 }
 
-export function aesDecrypt (key, blob, { iv, authTag } = {}) {
+export function aesDecrypt (key: Buffer, blob: Buffer, { iv, authTag } = {}) : Buffer {
   const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv)
   decipher.setAuthTag(authTag)
   const message = Buffer.concat([decipher.update(blob), decipher.final()])
