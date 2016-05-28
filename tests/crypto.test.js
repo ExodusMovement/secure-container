@@ -37,6 +37,8 @@ test('stretchPassphrase will accept a buffer passphrase', (t) => {
 })
 
 test('aesEncrypt / aesDecrypt', (t) => {
+  t.plan(3)
+
   const key = crypto.randomBytes(32)
   const message = new Buffer('we will attack at midnight!')
 
@@ -47,6 +49,20 @@ test('aesEncrypt / aesDecrypt', (t) => {
   const decryptedMessage = scCrypto.aesDecrypt(key, blob, { iv, authTag })
 
   t.is(decryptedMessage.toString('utf8'), message.toString('utf8'), 'messages are the same')
+
+  t.end()
+})
+
+test('boxEncrypt / boxDecrypt', (t) => {
+  t.plan(1)
+
+  const passphrase = 'open sesame'
+  const message = new Buffer('The secret launch code is 1234.')
+
+  const { authTag, blob, iv, salt } = scCrypto.boxEncrypt(passphrase, message)
+  const actualMessage = scCrypto.boxDecrypt(passphrase, blob, { iv, authTag }, { salt })
+
+  t.is(message.toString('utf8'), actualMessage.toString('utf8'), 'messages are the same')
 
   t.end()
 })
