@@ -17,6 +17,7 @@ export function checkMagic (magic) {
 
 export const struct = varstruct(vsf([
   ['magic', Bound(varstruct.Buffer(4), checkMagic)],
+  ['version', UInt32BE], // should be all 0's for now
   ['reserved', UInt32BE], // should be all 0's for now
   ['versionTag', VarString(UInt8)],
   ['appName', VarString(UInt8, 'utf-8')],
