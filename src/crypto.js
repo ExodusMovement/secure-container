@@ -1,12 +1,12 @@
 import crypto from 'crypto'
 import scrypt from 'scryptsy'
 
-export function defaultScryptParams () : Object {
+export function createScryptParams () : Object {
   return { salt: crypto.randomBytes(32), n: 16384, r: 8, p: 1 }
 }
 
 // always returns 32 byte key
-export function stretchPassphrase (passphrase: string | Buffer, { salt, n, r, p } = defaultScryptParams()) : Object {
+export function stretchPassphrase (passphrase: string | Buffer, { salt, n, r, p } = createScryptParams()) : Object {
   const key = scrypt(passphrase, salt, n, r, p, 32)
   return { key, salt }
 }
@@ -33,7 +33,7 @@ export function boxEncrypt (passphrase: string | Buffer, message: Buffer, scrypt
 }
 
 export function boxDecrypt (passphrase: string | Buffer, blob: Buffer, { iv, authTag }, scryptParams) {
-  scryptParams = { ...defaultScryptParams(), ...scryptParams }
+  scryptParams = { ...createScryptParams(), ...scryptParams }
   const { key } = stretchPassphrase(passphrase, scryptParams)
   const message = aesDecrypt(key, blob, { iv, authTag })
   return message
