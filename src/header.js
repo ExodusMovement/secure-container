@@ -4,7 +4,6 @@ import varstruct, {
   Bound,
   UInt8,
   UInt32BE,
-  VarBuffer,
   VarString
 } from 'varstruct'
 import { vsf } from './util'
@@ -21,13 +20,11 @@ export const struct = varstruct(vsf([
   ['reserved', UInt32BE], // should be all 0's for now
   ['versionTag', VarString(UInt8)],
   ['appName', VarString(UInt8, 'utf-8')],
-  ['appVersion', VarString(UInt8, 'utf-8')],
-  ['metadata', VarBuffer(UInt32BE)],
-  ['blob', VarBuffer(UInt32BE)]
+  ['appVersion', VarString(UInt8, 'utf-8')]
 ]))
 
 export function decode (headerBlob: Buffer): Object {
-  // if (headerBlob.byteLength > 512) console.warn('header greater than 512 bytes, are you sure this is the header?')
+  if (headerBlob.byteLength > 512) console.warn('header greater than 512 bytes, are you sure this is the header?')
   return struct.decode(headerBlob)
 }
 
