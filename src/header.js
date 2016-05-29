@@ -9,6 +9,7 @@ import varstruct, {
 import { vsf } from './util'
 
 export const HEADER_LEN_BYTES = 224
+export const HEADER_VERSION_TAG = 'seco-v0-scrypt-aes'
 export const MAGIC = Buffer.from('SECO', 'utf8')
 
 export function checkMagic (magic) {
@@ -37,4 +38,16 @@ export function serialize (header: Object) {
   let buf = Buffer.alloc(HEADER_LEN_BYTES)
   encode(header).copy(buf)
   return buf
+}
+
+// TODO: fetch parent module and include this info by default
+export function create ({ appName, appVersion } = { appName: '', appVersion: '' }): Object {
+  return {
+    magic: MAGIC,
+    version: 0,
+    reserved: 0,
+    versionTag: HEADER_VERSION_TAG,
+    appName,
+    appVersion
+  }
 }

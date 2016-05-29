@@ -10,14 +10,7 @@ test('integration', (t) => {
 
   // -- ENCRYPTION ---
 
-  const headerObj = {
-    magic: header.MAGIC,
-    version: 0,
-    reserved: 0,
-    versionTag: 'seco-test-1',
-    appName: 'Exodus',
-    appVersion: 'v1.0.0'
-  }
+  const headerObj = header.create({ appName: 'Exodus', appVersion: 'v1.0.0' })
   const headerBuf = header.serialize(headerObj)
 
   // includes a random scrypt.. may need to change
