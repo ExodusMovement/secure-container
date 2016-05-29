@@ -1,7 +1,7 @@
 /* @flow */
 import varstruct, { UInt32BE, Buffer as Buf } from 'varstruct'
 import { createScryptParams, IV_LEN_BYTES } from './crypto'
-import { vsf } from './util'
+import { vsf, CStr } from './util'
 
 export const METADATA_LEN_BYTES = 256
 
@@ -12,6 +12,7 @@ export const struct = varstruct(vsf([
     ['r', UInt32BE],
     ['p', UInt32BE]
   ]],
+  ['cipher', CStr(32)],
   ['blobKey', [
     ['iv', Buf(IV_LEN_BYTES)],
     ['authTag', Buf(16)],
@@ -41,6 +42,7 @@ export function serialize (metadata: Object): Buffer {
 export function create (scryptParams = createScryptParams()) : Object {
   return {
     scrypt: scryptParams,
+    cipher: 'aes-256-gcm',
     blobKey: {
       iv: Buffer.alloc(IV_LEN_BYTES),
       authTag: Buffer.alloc(16),

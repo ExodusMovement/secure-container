@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import test from 'tape'
 import * as metadata from '../src/metadata'
+import { IV_LEN_BYTES } from '../src/crypto'
 
 test('encode / decode metadata', (t) => {
   t.plan(1)
@@ -12,19 +13,20 @@ test('encode / decode metadata', (t) => {
       r: 8,
       p: 1
     },
+    cipher: 'aes-256-gcm',
     blobKey: {
-      iv: crypto.randomBytes(12),
+      iv: crypto.randomBytes(IV_LEN_BYTES),
       authTag: Buffer.alloc(16),
       key: Buffer.alloc(32)
     },
     blob: {
-      iv: crypto.randomBytes(12),
+      iv: crypto.randomBytes(IV_LEN_BYTES),
       authTag: Buffer.alloc(16)
     }
   }
 
   var obj2 = metadata.decode(metadata.encode(obj))
-  t.deepEqual(obj, obj2, 'verify objects are the same')
+  t.deepEqual(obj2, obj, 'verify objects are the same')
 
   t.end()
 })
