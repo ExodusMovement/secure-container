@@ -1,6 +1,7 @@
 import test from 'tape'
 import crypto from 'crypto'
 import * as header from '../src/header'
+import { encrypt as encryptBlob, decrypt as decryptBlob } from '../src/blob'
 import * as metadata from '../src/metadata'
 import * as file from '../src/file'
 import * as scCrypto from '../src/crypto'
@@ -20,18 +21,13 @@ test('integration', (t) => {
     superSecret: 'this is a secret message',
     agent: 'James Bond'
   }
-
   const message = new Buffer(JSON.stringify(dataToEncrypt), 'utf8')
 
   const secretKey = crypto.randomBytes(32)
   const passphrase = 'open sesame'
 
-  const { authTag, iv, blob } = scCrypto.aesEncrypt(secretKey, message)
-  metadataObj.blob = { authTag, iv }
-
-  metadataObj.blobKey = scCrypto.boxEncrypt(passphrase, secretKey, metadataObj.scrypt)
-  metadataObj.blobKey.key = metadataObj.blobKey.blob
-  delete metadataObj.blobKey.blob
+  const { blob } = encryptBlob(message, metadataObj, secretKey)
+  metadata.encryptBlobKey(metadataObj, passphrase, secretKey)
 
   const metadataBuf = metadata.serialize(metadataObj)
 
@@ -53,11 +49,10 @@ test('integration', (t) => {
   t.deepEqual(scCrypto.sha256(decTotalBuf), fileObj.checksum, 'checksums equal')
   t.true(file.checkContents(fileBuf), 'checksum is ok')
 
-  const decSecretKey = scCrypto.boxDecrypt(passphrase, decMetadata.blobKey.key, decMetadata.blobKey, decMetadata.scrypt)
-
+  const decSecretKey = metadata.decryptBlobKey(decMetadata, passphrase)
   t.deepEqual(decSecretKey, secretKey, 'secret keys are the same')
 
-  const decMessage = scCrypto.aesDecrypt(decSecretKey, decFileObj.blob, decMetadata.blob)
+  const decMessage = decryptBlob(decFileObj.blob, decMetadata, decSecretKey)
   const decData = JSON.parse(decMessage.toString('utf8'))
 
   t.deepEqual(dataToEncrypt, decData, 'secret data is the same')
