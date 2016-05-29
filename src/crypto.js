@@ -1,8 +1,8 @@
 import crypto from 'crypto'
 import scrypt from 'scryptsy'
 
-export function createScryptParams () : Object {
-  return { salt: crypto.randomBytes(32), n: 16384, r: 8, p: 1 }
+export function createScryptParams (params = {}) : Object {
+  return { salt: crypto.randomBytes(32), n: 16384, r: 8, p: 1, ...params }
 }
 
 // always returns 32 byte key

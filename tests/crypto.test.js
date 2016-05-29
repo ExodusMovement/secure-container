@@ -66,3 +66,12 @@ test('boxEncrypt / boxDecrypt', (t) => {
 
   t.end()
 })
+
+test('createScryptParams', (t) => {
+  t.plan(1)
+
+  let params = scCrypto.createScryptParams({ n: 16 })
+  t.is(params.n, 16, 'var is set')
+
+  t.end()
+})
