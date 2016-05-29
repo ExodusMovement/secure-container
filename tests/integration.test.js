@@ -58,6 +58,7 @@ test('integration', (t) => {
   const decMetadata = metadata.decode(decFileObj.metadata)
 
   t.deepEqual(scCrypto.sha256(decTotalBuf), fileObj.checksum, 'checksums equal')
+  t.true(file.checkContents(fileBuf), 'checksum is ok')
 
   const decSecretKey = scCrypto.boxDecrypt(passphrase, decMetadata.blobKey.key, decMetadata.blobKey, decMetadata.scrypt)
 
