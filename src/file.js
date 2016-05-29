@@ -1,5 +1,7 @@
 /* @flow */
 import varstruct, { Buffer as Buf, VarBuffer, UInt32BE } from 'varstruct'
+import { fromUInt32BE } from './buffer'
+import * as scCrypto from './crypto'
 import { vsf } from './util'
 
 import { HEADER_LEN_BYTES } from './header'
@@ -12,10 +14,19 @@ export const struct = varstruct(vsf([
   ['blob', VarBuffer(UInt32BE)]
 ]))
 
-export function decode (file: Buffer): Object {
-  return struct.decode(file)
+export function decode (fileContents: Buffer): Object {
+  return struct.decode(fileContents)
 }
 
-export function encode (file: Object): Buffer {
-  return struct.encode(file)
+export function encode (fileContents: Object): Buffer {
+  return struct.encode(fileContents)
+}
+
+export function computeChecksum (metadata: Buffer, blob: Buffer): Buffer {
+  return scCrypto.sha256(Buffer.concat([metadata, fromUInt32BE(blob.byteLength), blob]))
+}
+
+export function checkContents (fileContents: Buffer): boolean {
+  let fileObj = decode(fileContents)
+  return fileObj.checksum.equals(computeChecksum(fileObj.metadata, fileObj.blob))
 }

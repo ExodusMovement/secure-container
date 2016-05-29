@@ -4,7 +4,6 @@ import * as header from '../src/header'
 import * as metadata from '../src/metadata'
 import * as file from '../src/file'
 import * as scCrypto from '../src/crypto'
-import { fromUInt32BE } from '../src/buffer'
 
 test('integration', (t) => {
   // t.plan(1)
@@ -43,11 +42,9 @@ test('integration', (t) => {
 
   const metadataBuf = metadata.serialize(metadataObj)
 
-  const totalBuf = Buffer.concat([metadataBuf, fromUInt32BE(blob.byteLength), blob])
-
   const fileObj = {
     header: headerBuf,
-    checksum: scCrypto.sha256(totalBuf),
+    checksum: file.computeChecksum(metadataBuf, blob),
     metadata: metadataBuf,
     blob
   }
