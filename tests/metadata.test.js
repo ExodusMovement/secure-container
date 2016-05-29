@@ -30,3 +30,18 @@ test('encode / decode metadata', (t) => {
 
   t.end()
 })
+
+test('encryptBlobKey / decryptBlobKey ', (t) => {
+  t.plan(2)
+
+  const blobKey = crypto.randomBytes(32)
+  const passphrase = 'open sesame!'
+  let md = metadata.create()
+
+  t.doesNotThrow(() => metadata.encryptBlobKey(md, passphrase, blobKey))
+  const actualBlobKey = metadata.decryptBlobKey(md, passphrase)
+
+  t.deepEqual(actualBlobKey, blobKey, 'blob keys are the same')
+
+  t.end()
+})

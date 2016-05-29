@@ -1,6 +1,6 @@
 /* @flow */
 import varstruct, { UInt32BE, Buffer as Buf } from 'varstruct'
-import { createScryptParams, IV_LEN_BYTES } from './crypto'
+import { createScryptParams, IV_LEN_BYTES, boxEncrypt, boxDecrypt } from './crypto'
 import { vsf, CStr } from './util'
 
 export const METADATA_LEN_BYTES = 256
@@ -16,7 +16,7 @@ export const struct = varstruct(vsf([
   ['blobKey', [
     ['iv', Buf(IV_LEN_BYTES)],
     ['authTag', Buf(16)],
-    ['key', Buf(32)] // JP you were thinking about moving this to end of struct
+    ['key', Buf(32)]
   ]],
   ['blob', [
     ['iv', Buf(IV_LEN_BYTES)],
@@ -53,4 +53,15 @@ export function create (scryptParams = createScryptParams()) : Object {
       authTag: Buffer.alloc(16)
     }
   }
+}
+
+export function encryptBlobKey (metadata: Object, passphrase: string | Buffer, blobKey: Buffer) {
+  const { authTag, blob, iv, salt } = boxEncrypt(passphrase, blobKey, metadata.scrypt)
+  metadata.scrypt.salt = salt
+  metadata.blobKey = { authTag, iv, key: blob }
+}
+
+export function decryptBlobKey (metadata: Object, passphrase: string | Buffer): Buffer {
+  const blobKey = boxDecrypt(passphrase, metadata.blobKey.key, metadata.blobKey, metadata.scrypt)
+  return blobKey
 }

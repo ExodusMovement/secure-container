@@ -1,3 +1,4 @@
+/* @flow */
 import * as scCrypto from './crypto'
 
 export function encrypt (message: Buffer, metadata: Object, blobKey: Buffer) {
