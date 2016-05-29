@@ -1,11 +1,9 @@
 /* @flow */
 import varstruct, { UInt32BE, Buffer as Buf } from 'varstruct'
-import { createScryptParams } from './crypto'
+import { createScryptParams, IV_LEN_BYTES } from './crypto'
 import { vsf } from './util'
 
 export const METADATA_LEN_BYTES = 256
-
-const IV_LEN_BYTES = 12
 
 export const struct = varstruct(vsf([
   ['scrypt', [

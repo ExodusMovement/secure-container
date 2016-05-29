@@ -1,6 +1,9 @@
 import crypto from 'crypto'
 import scrypt from 'scryptsy'
 
+// http://csrc.nist.gov/publications/nistpubs/800-38D/SP-800-38D.pdf 8.2.2 RBG-based Construction (about initialization vectors)
+export const IV_LEN_BYTES = 12
+
 export function createScryptParams (params = {}) : Object {
   return { salt: crypto.randomBytes(32), n: 16384, r: 8, p: 1, ...params }
 }
