@@ -31,8 +31,8 @@
     "node": ">= 6.0.0"
   },
   "files": [
-    "./lib",
-    "./src"
+    "lib/",
+    "src/"
   ],
   "homepage": "https://github.com/exodusmovement/secure-container#readme",
   "jsnext:main": "./src/index.js",
