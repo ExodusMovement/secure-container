@@ -127,9 +127,53 @@ Returns a buffer.
 
 The opposite of `file.encode()`. Takes a buffer and returns an object.
 
-Description
+File Format Description
 -----------
 
-Offset | Size | Label | Description |
------- | ---- | ----- | ----------- |
-0 | 4 | `magic` | The magic header indicating the file type. Always `SECO`.
+This is the documentation for the binary structure of secure containers.
+
+For clarity, we have split the documentation into four sections: `header`, `checksum`, `metadata`, and `blob`.
+
+### Header
+
+Size | Label | Description |
+---- | ----- | ----------- |
+4 | `magic` | The magic header indicating the file type. Always `SECO`.
+4 | `version` | File format version. Currently `0`, stored as `UInt32BE`.
+4 | `reserved` | Reserved for future use.
+1 | `versionTagLength` | Length of `versionTag` as `UInt8`.
+`versionTagLength` | `versionTag` | Should be `'seco-v0-scrypt-aes'`.
+1 | `appNameLength` | Length of `appName` as `UInt8`.
+`appNameLength` | `appName` | Name of the application writing the file.
+1 | `appVersionLength` | Length of `appVersion` as `UInt8`.
+`appVersionLength` | `appVersion` | Version of the application writing the file.
+
+### Checksum
+
+32-byte `sha256` checksum of the following data:
+
+1. The `metadata`.
+1. Byte-length of the `blob`, stored as `UInt32BE`.
+1. The `blob`.
+
+### Metadata
+
+Size | Label | Description |
+---- | ----- | ----------- |
+32 | `salt` | Scrypt salt.
+4 | `n` | Scrypt `n` parameter.
+4 | `r` | Scrypt `r` parameter.
+4 | `p` | Scrypt `p` parameter.
+32 | `cipher` | Currently `aes-256-gcm` stored as a zero-terminated C-string.
+12 | `iv` | `blobKey`'s `iv`.
+16 | `authTag` | `blobKey`'s `authTag`.
+32 | `key` | `blobKey`'s `key`.
+12 | `iv` | The `blob`'s `iv`.
+16 | `authTag` | The `blob`'s `authTag`.
+
+### Blob
+
+Size | Label | Description |
+---- | ----- | ----------- |
+4 | `blobLength` | Length of `blob` as `UInt32BE`.
+`blobLength` | `blob` | Encrypted data.
