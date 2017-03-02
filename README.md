@@ -3,10 +3,6 @@ secure-container
 
 [![Build Status](https://travis-ci.org/ExodusMovement/secure-container.svg?branch=master)](https://travis-ci.org/ExodusMovement/secure-container)
 
-Don't use this yet.
-
-- There is no stability in this spec yet.
-- It needs a full security audit.
 
 Install
 -------
