@@ -36,6 +36,10 @@ Returns an Object.
 
 Serialize a header object. `headerObj` is a header object made with `create()`. Returns a Buffer.
 
+#### `header.decode(buffer)`
+
+Decodes a header buffer and returns the Object.
+
 ### `metadata` module
 
 ```js
