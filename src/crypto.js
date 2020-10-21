@@ -1,7 +1,7 @@
 import randomBytes from 'randombytes'
 import createHash from 'create-hash'
 import aes from 'browserify-aes'
-import scrypt from 'scryptsy'
+import scrypt from '@exodus/scryptsy'
 
 // http://csrc.nist.gov/publications/nistpubs/800-38D/SP-800-38D.pdf 8.2.2 RBG-based Construction (about initialization vectors)
 export const IV_LEN_BYTES = 12 // <-- always 12, any other value will error, not sure why it won't allow higher... probably concat with freefield?
