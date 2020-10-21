@@ -14,6 +14,51 @@ Install
 API
 -----
 
+### Main Module
+
+This is the main module most users should use; other modules are for advanced users only.
+
+```js
+import * as seco from 'secure-container'
+// OR
+const seco = require('secure-container')
+```
+
+#### `seco.encrypt()`
+
+`encrypt(data, options)`
+
+- `data` (String | Buffer) Data to encrypt
+- `options` (Object)
+  - `header` (Object)
+    - `appName` (String) Name of your app
+    - `appVersion` (String) Version of your app
+  - `passphrase` (String | Buffer) Passphrase used to encrypt the data
+  - `metadata` (Object)
+  - `blobKey` (Buffer)
+
+_Note:_ Must set either `passphrase` or `metadata` & `blobKey`.
+
+Returns an Object that contains:
+
+- `encryptData` (Buffer) The encrypted data
+- `blobKey` (Buffer)
+- `metadata` (Object)
+
+#### `seco.decrypt()`
+
+`decrypt(encryptData, passphrase)`
+
+- `encryptData` (Buffer) Data to decrypt
+- `passphrase` (String | Buffer) Passphrase to decrypt the data
+
+Returns an Object that contains:
+
+- `data` (Buffer) The file data
+- `header` (Object) The header for the secure-container
+- `blobKey` (Buffer)
+- `metadata` (Object)
+
 ### `header` module
 
 ```js
