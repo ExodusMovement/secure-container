@@ -32,12 +32,9 @@
     "node": ">= 12.0.0"
   },
   "files": [
-    "lib/",
-    "src/",
-    "README.md"
+    "lib/"
   ],
   "homepage": "https://github.com/exodusmovement/secure-container#readme",
-  "jsnext:main": "./src/index.js",
   "keywords": [
     "secure"
   ],
