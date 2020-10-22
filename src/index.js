@@ -1,5 +1,5 @@
 /* flow */
-import * as crypto from 'crypto'
+import randomBytes from 'randombytes'
 import * as conBlob from './blob'
 import * as conHeader from './header'
 import * as conMetadata from './metadata'
@@ -15,7 +15,7 @@ export function encrypt (data: BufOrStr, options = {}) {
   let blobKey
   let metadata
   if (options.passphrase) {
-    blobKey = crypto.randomBytes(32)
+    blobKey = randomBytes(32)
     metadata = conMetadata.create()
     conMetadata.encryptBlobKey(metadata, options.passphrase, blobKey)
   } else if (options.metadata && options.blobKey) {
