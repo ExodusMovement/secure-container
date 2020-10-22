@@ -24,7 +24,7 @@ export function aesEncrypt (key: Buffer, message: Buffer) : Object {
   return { authTag, blob, iv }
 }
 
-export function aesDecrypt (key: Buffer, blob: Buffer, { iv, authTag } = {}) : Buffer {
+export function aesDecrypt (key: Buffer, blob: Buffer, { iv, authTag }) : Buffer {
   const decipher = aes.createDecipheriv('aes-256-gcm', key, iv)
   decipher.setAuthTag(authTag)
   const message = Buffer.concat([decipher.update(blob), decipher.final()])
