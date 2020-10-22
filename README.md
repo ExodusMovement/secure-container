@@ -41,15 +41,15 @@ _Note:_ Must set either `passphrase` or `metadata` & `blobKey`.
 
 Returns an Object that contains:
 
-- `encryptData` (Buffer) The encrypted data
+- `encryptedData` (Buffer) The encrypted data
 - `blobKey` (Buffer)
 - `metadata` (Object)
 
 #### `seco.decrypt()`
 
-`decrypt(encryptData, passphrase)`
+`decrypt(encryptedData, passphrase)`
 
-- `encryptData` (Buffer) Data to decrypt
+- `encryptedData` (Buffer) Data to decrypt
 - `passphrase` (String | Buffer) Passphrase to decrypt the data
 
 Returns an Object that contains:
