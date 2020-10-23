@@ -17,29 +17,24 @@
     "varstruct": "^5.2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.9.0",
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
+    "@babel/preset-flow": "^7.12.1",
+    "@babel/register": "^7.12.1",
     "babel-eslint": "^6.0.4",
-    "babel-plugin-syntax-flow": "^6.8.0",
-    "babel-plugin-transform-flow-strip-types": "^6.8.0",
-    "babel-plugin-typecheck": "^3.9.0",
-    "babel-preset-node6": "^11.0.0",
-    "babel-preset-stage-2": "^6.5.0",
-    "babel-register": "^6.9.0",
     "standard": "^7.1.0",
     "tap-spec": "^4.1.1",
     "tape": "^4.5.1",
     "tape-promise": "^1.1.0"
   },
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">= 12.0.0"
   },
   "files": [
-    "lib/",
-    "src/",
-    "README.md"
+    "lib/"
   ],
   "homepage": "https://github.com/exodusmovement/secure-container#readme",
-  "jsnext:main": "./src/index.js",
   "keywords": [
     "secure"
   ],
@@ -50,12 +45,11 @@
     "url": "git+https://github.com/exodusmovement/secure-container.git"
   },
   "scripts": {
-    "build": "babel --ignore=__tests__ src --out-dir lib",
+    "build": "babel src --out-dir lib",
     "lint": "standard",
     "prepublish": "npm test",
-    "posttest": "NODE_ENV=production npm run build",
     "test": "npm run build && npm run lint && npm run unit",
-    "unit": "find ./tests -name *.test.js -exec tape -r babel-register {} \\; | tap-spec"
+    "unit": "find ./tests -name *.test.js -exec tape -r @babel/register {} \\; | tap-spec"
   },
   "standard": {
     "ignore": "lib/",
