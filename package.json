@@ -1,7 +1,7 @@
 {
   "name": "secure-container",
   "description": "Secure container.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "JP Richardson <jprichardson@gmail.com> (http://www.exodus.io)",
   "bugs": {
     "url": "https://github.com/exodusmovement/secure-container/issues"
