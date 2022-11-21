@@ -2,11 +2,12 @@
   "name": "secure-container",
   "description": "Secure container.",
   "version": "2.0.0",
-  "author": "JP Richardson <jprichardson@gmail.com> (http://www.exodus.io)",
+  "author": "Exodus Movement, Inc.",
   "bugs": {
     "url": "https://github.com/exodusmovement/secure-container/issues"
   },
   "contributors": [
+    "JP Richardson",
     "Kirill Fomichev"
   ],
   "dependencies": {
